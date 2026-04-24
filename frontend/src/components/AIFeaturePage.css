@@ -1,0 +1,233 @@
+.ai-feature-page {
+  min-height: calc(100vh - 120px);
+}
+
+.ai-header {
+  margin-bottom: 24px;
+}
+
+.ai-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ai-icon {
+  font-size: 32px;
+}
+
+.ai-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.ai-description {
+  color: var(--text-light);
+  font-size: 15px;
+  margin-top: 8px;
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+.ai-info-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #eff6ff, #f0f9ff);
+  border: 1px solid #bfdbfe;
+  border-radius: var(--radius-md);
+  margin-bottom: 24px;
+  font-size: 14px;
+  color: #1e40af;
+  line-height: 1.6;
+}
+
+.ai-info-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.ai-input-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px 24px;
+  margin-bottom: 24px;
+}
+
+.ai-generate-btn {
+  min-width: 220px;
+}
+
+.ai-generate-btn:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+/* Loading Animation */
+.ai-loading-state {
+  text-align: center;
+  padding: 60px 20px;
+  animation: fadeIn 0.4s ease;
+}
+
+.ai-loading-animation {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ai-pulse-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  opacity: 0;
+  animation: pulseRing 2s ease-out infinite;
+}
+
+.ai-pulse-ring.delay-1 {
+  animation-delay: 0.5s;
+}
+
+.ai-pulse-ring.delay-2 {
+  animation-delay: 1s;
+}
+
+@keyframes pulseRing {
+  0% { transform: scale(0.5); opacity: 0.8; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+.ai-loading-icon {
+  font-size: 36px;
+  z-index: 2;
+  animation: pulse 1.5s ease infinite;
+}
+
+.ai-loading-state h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.ai-loading-state p {
+  color: var(--text-light);
+  font-size: 14px;
+}
+
+/* AI Result Card Enhanced */
+.ai-feature-page .ai-result-card {
+  background: linear-gradient(135deg, #fafbff 0%, #faf5ff 30%, #fff7ed 70%, #f0fdf4 100%);
+  border: 1px solid #e0e7ff;
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  margin-top: 24px;
+  animation: fadeIn 0.6s ease forwards;
+  box-shadow: 0 4px 20px rgba(30, 64, 175, 0.08);
+}
+
+.ai-feature-page .ai-result-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #e0e7ff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ai-feature-page .ai-result-content {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--text);
+}
+
+.ai-feature-page .ai-result-content h2 {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin: 28px 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e0e7ff;
+}
+
+.ai-feature-page .ai-result-content h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--primary);
+  margin: 20px 0 8px;
+  border: none;
+  padding: 0;
+  display: block;
+}
+
+.ai-feature-page .ai-result-content h4 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #475569;
+  margin: 16px 0 8px;
+}
+
+.ai-feature-page .ai-result-content p {
+  margin-bottom: 12px;
+}
+
+.ai-feature-page .ai-result-content ul {
+  margin: 8px 0 16px 24px;
+  list-style-type: none;
+}
+
+.ai-feature-page .ai-result-content ul li {
+  margin-bottom: 8px;
+  padding-left: 20px;
+  position: relative;
+}
+
+.ai-feature-page .ai-result-content ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+}
+
+.ai-feature-page .ai-result-content strong {
+  color: var(--primary-dark);
+  font-weight: 600;
+}
+
+.ai-feature-page .ai-result-content .metric-highlight {
+  display: inline-flex;
+  align-items: center;
+  background: white;
+  padding: 2px 10px;
+  border-radius: 16px;
+  font-weight: 700;
+  color: var(--primary);
+  border: 1px solid #c7d2fe;
+  font-size: 14px;
+  box-shadow: 0 1px 3px rgba(30, 64, 175, 0.1);
+}
