@@ -2,74 +2,65 @@ require('dotenv').config({ path: require('path').join(__dirname, '../../.env') }
 
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
 
 const app = express();
+const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:4000';
 
-// Middleware
-app.use(cors());
+// Security middleware
+app.use(helmet());
+app.use(cors({ origin: CLIENT_URL, credentials: true }));
 app.use(express.json());
 
-// Route imports
-const authRoutes = require('./routes/auth');
-const aiRoutes = require('./routes/ai');
-const liftTicketRoutes = require('./routes/liftTickets');
-const seasonPassRoutes = require('./routes/seasonPasses');
-const liftRoutes = require('./routes/lifts');
-const trailRoutes = require('./routes/trails');
-const snowmakingRoutes = require('./routes/snowmaking');
-const patrolIncidentRoutes = require('./routes/patrolIncidents');
-const rentalInventoryRoutes = require('./routes/rentalInventory');
-const lessonRoutes = require('./routes/lessons');
-const instructorRoutes = require('./routes/instructors');
-const snowReportRoutes = require('./routes/snowReports');
-const parkingRoutes = require('./routes/parking');
-const foodBeverageRoutes = require('./routes/foodBeverage');
-const retailRoutes = require('./routes/retail');
-const childcareRoutes = require('./routes/childcare');
-const lostFoundRoutes = require('./routes/lostFound');
-const guestServiceRoutes = require('./routes/guestServices');
-const eventRoutes = require('./routes/events');
-const accommodationRoutes = require('./routes/accommodations');
-const shuttleRoutes = require('./routes/shuttles');
-const equipmentMaintenanceRoutes = require('./routes/equipmentMaintenance');
-const rfidAccessRoutes = require('./routes/rfidAccess');
-const weatherStationRoutes = require('./routes/weatherStations');
-const avalancheControlRoutes = require('./routes/avalancheControl');
-const staffingRoutes = require('./routes/staffing');
-const terrainParkRoutes = require('./routes/terrainPark');
+// Auth middleware
+const authMiddleware = require('./middleware/auth');
 
-// Register routes
-app.use('/api/auth', authRoutes);
-app.use('/api/ai', aiRoutes);
-app.use('/api/lift-tickets', liftTicketRoutes);
-app.use('/api/season-passes', seasonPassRoutes);
-app.use('/api/lifts', liftRoutes);
-app.use('/api/trails', trailRoutes);
-app.use('/api/snowmaking', snowmakingRoutes);
-app.use('/api/patrol-incidents', patrolIncidentRoutes);
-app.use('/api/rental-inventory', rentalInventoryRoutes);
-app.use('/api/lessons', lessonRoutes);
-app.use('/api/instructors', instructorRoutes);
-app.use('/api/snow-reports', snowReportRoutes);
-app.use('/api/parking', parkingRoutes);
-app.use('/api/food-beverage', foodBeverageRoutes);
-app.use('/api/retail', retailRoutes);
-app.use('/api/childcare', childcareRoutes);
-app.use('/api/lost-found', lostFoundRoutes);
-app.use('/api/guest-services', guestServiceRoutes);
-app.use('/api/events', eventRoutes);
-app.use('/api/accommodations', accommodationRoutes);
-app.use('/api/shuttles', shuttleRoutes);
-app.use('/api/equipment-maintenance', equipmentMaintenanceRoutes);
-app.use('/api/rfid-access', rfidAccessRoutes);
-app.use('/api/weather-stations', weatherStationRoutes);
-app.use('/api/avalanche-control', avalancheControlRoutes);
-app.use('/api/staffing', staffingRoutes);
-app.use('/api/terrain-park', terrainParkRoutes);
+// Public routes
+app.use('/api/auth', require('./routes/auth'));
+
+// Protected routes - all require auth
+const protectedRoutes = [
+  ['/api/ai', require('./routes/ai')],
+  ['/api/lift-tickets', require('./routes/liftTickets')],
+  ['/api/season-passes', require('./routes/seasonPasses')],
+  ['/api/lifts', require('./routes/lifts')],
+  ['/api/trails', require('./routes/trails')],
+  ['/api/snowmaking', require('./routes/snowmaking')],
+  ['/api/patrol-incidents', require('./routes/patrolIncidents')],
+  ['/api/rental-inventory', require('./routes/rentalInventory')],
+  ['/api/lessons', require('./routes/lessons')],
+  ['/api/instructors', require('./routes/instructors')],
+  ['/api/snow-reports', require('./routes/snowReports')],
+  ['/api/parking', require('./routes/parking')],
+  ['/api/food-beverage', require('./routes/foodBeverage')],
+  ['/api/retail', require('./routes/retail')],
+  ['/api/childcare', require('./routes/childcare')],
+  ['/api/lost-found', require('./routes/lostFound')],
+  ['/api/guest-services', require('./routes/guestServices')],
+  ['/api/events', require('./routes/events')],
+  ['/api/accommodations', require('./routes/accommodations')],
+  ['/api/shuttles', require('./routes/shuttles')],
+  ['/api/equipment-maintenance', require('./routes/equipmentMaintenance')],
+  ['/api/rfid-access', require('./routes/rfidAccess')],
+  ['/api/weather-stations', require('./routes/weatherStations')],
+  ['/api/avalanche-control', require('./routes/avalancheControl')],
+  ['/api/staffing', require('./routes/staffing')],
+  ['/api/terrain-park', require('./routes/terrainPark')],
+];
+
+protectedRoutes.forEach(([path, router]) => {
+  app.use(path, authMiddleware, router);
+});
 
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// Error handler
+app.use((err, req, res, next) => {
+  console.error('Unhandled error:', err.stack);
+  res.status(err.status || 500).json({ error: err.message || 'Internal Server Error' });
 });
 
 // Start server
@@ -79,3 +70,21 @@ app.listen(PORT, () => {
 });
 
 module.exports = app;
+
+// AI feature mount: revpasday
+app.use('/api/ai/revpasday', require('./routes/ai-revpasday'));
+// === Batch 07 Gaps & Frontend Mounts ===
+app.use('/api/gap-no-occupancyforecast-for-resort-busyness', require('./routes/gap-no-occupancyforecast-for-resort-busyness'));
+app.use('/api/gap-no-revenueoptimization-bundle-pricing', require('./routes/gap-no-revenueoptimization-bundle-pricing'));
+app.use('/api/gap-no-avalancheriskassessment-ml', require('./routes/gap-no-avalancheriskassessment-ml'));
+app.use('/api/gap-no-equipmentmaintenancescheduling-ai', require('./routes/gap-no-equipmentmaintenancescheduling-ai'));
+app.use('/api/gap-no-instructorscheduling-demand-matching', require('./routes/gap-no-instructorscheduling-demand-matching'));
+app.use('/api/gap-no-churnprediction-returning-guest-likelihoo', require('./routes/gap-no-churnprediction-returning-guest-likelihoo'));
+app.use('/api/gap-no-realtime-lift-line-wait-estimation', require('./routes/gap-no-realtime-lift-line-wait-estimation'));
+app.use('/api/gap-no-public-online-lesson-booking-widget', require('./routes/gap-no-public-online-lesson-booking-widget'));
+app.use('/api/gap-no-food-ordering-pos-integration', require('./routes/gap-no-food-ordering-pos-integration'));
+app.use('/api/gap-limited-weather-api-integration-stations-are', require('./routes/gap-limited-weather-api-integration-stations-are'));
+app.use('/api/gap-no-lift-ticket-pos-integration', require('./routes/gap-no-lift-ticket-pos-integration'));
+app.use('/api/gap-no-guest-mobile-app-companion', require('./routes/gap-no-guest-mobile-app-companion'));
+app.use('/api/gap-no-notificationssms-for-guests', require('./routes/gap-no-notificationssms-for-guests'));
+// === End Batch 07 ===

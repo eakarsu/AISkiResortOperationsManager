@@ -35,6 +35,35 @@ import AIGroomingOptimizationPage from './pages/AIGroomingOptimizationPage';
 import AIGuestRecommendationsPage from './pages/AIGuestRecommendationsPage';
 import AIMarketingContentPage from './pages/AIMarketingContentPage';
 import AIStaffingPredictionPage from './pages/AIStaffingPredictionPage';
+import AIOccupancyForecastPage from './pages/AIOccupancyForecastPage';
+import AIAvalancheRiskAssessmentPage from './pages/AIAvalancheRiskAssessmentPage';
+import AIEquipmentMaintenanceSchedulingPage from './pages/AIEquipmentMaintenanceSchedulingPage';
+import AIInstructorSchedulingPage from './pages/AIInstructorSchedulingPage';
+import AIChurnPredictionPage from './pages/AIChurnPredictionPage';
+import AIRevenueOptimizationPage from './pages/AIRevenueOptimizationPage';
+
+// === Batch 07 Gaps & Frontend Mounts ===
+import CfRevenuePerAvailableSeatdayRevpasdayOpti from './pages/CfRevenuePerAvailableSeatdayRevpasdayOpti';
+import CfSnowConditionsForecasting from './pages/CfSnowConditionsForecasting';
+import CfDemandbasedStaffing from './pages/CfDemandbasedStaffing';
+import CfGuestExperiencePersonalization from './pages/CfGuestExperiencePersonalization';
+import CfMaintenancePredictiveScheduling from './pages/CfMaintenancePredictiveScheduling';
+import CfDynamicDiningRecommendations from './pages/CfDynamicDiningRecommendations';
+import GapNoOccupancyforecastForResortBusyness from './pages/GapNoOccupancyforecastForResortBusyness';
+import GapNoRevenueoptimizationBundlePricing from './pages/GapNoRevenueoptimizationBundlePricing';
+import GapNoAvalancheriskassessmentMl from './pages/GapNoAvalancheriskassessmentMl';
+import GapNoEquipmentmaintenanceschedulingAi from './pages/GapNoEquipmentmaintenanceschedulingAi';
+import GapNoInstructorschedulingDemandMatching from './pages/GapNoInstructorschedulingDemandMatching';
+import GapNoChurnpredictionReturningGuestLikelihoo from './pages/GapNoChurnpredictionReturningGuestLikelihoo';
+import GapNoRealtimeLiftLineWaitEstimation from './pages/GapNoRealtimeLiftLineWaitEstimation';
+import GapNoPublicOnlineLessonBookingWidget from './pages/GapNoPublicOnlineLessonBookingWidget';
+import GapNoFoodOrderingPosIntegration from './pages/GapNoFoodOrderingPosIntegration';
+import GapLimitedWeatherApiIntegrationStationsAre from './pages/GapLimitedWeatherApiIntegrationStationsAre';
+import GapNoLiftTicketPosIntegration from './pages/GapNoLiftTicketPosIntegration';
+import GapNoGuestMobileAppCompanion from './pages/GapNoGuestMobileAppCompanion';
+import GapNoNotificationssmsForGuests from './pages/GapNoNotificationssmsForGuests';
+// === End Batch 07 ===
+
 
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem('token');
@@ -78,7 +107,34 @@ function App() {
         <Route path="/ai/guest-recommendations" element={<PrivateRoute><Layout><AIGuestRecommendationsPage /></Layout></PrivateRoute>} />
         <Route path="/ai/marketing-content" element={<PrivateRoute><Layout><AIMarketingContentPage /></Layout></PrivateRoute>} />
         <Route path="/ai/staffing-prediction" element={<PrivateRoute><Layout><AIStaffingPredictionPage /></Layout></PrivateRoute>} />
+        <Route path="/ai/occupancy-forecast" element={<PrivateRoute><Layout><AIOccupancyForecastPage /></Layout></PrivateRoute>} />
+        <Route path="/ai/avalanche-risk" element={<PrivateRoute><Layout><AIAvalancheRiskAssessmentPage /></Layout></PrivateRoute>} />
+        <Route path="/ai/equipment-maintenance-scheduling" element={<PrivateRoute><Layout><AIEquipmentMaintenanceSchedulingPage /></Layout></PrivateRoute>} />
+        <Route path="/ai/instructor-scheduling" element={<PrivateRoute><Layout><AIInstructorSchedulingPage /></Layout></PrivateRoute>} />
+        <Route path="/ai/churn-prediction" element={<PrivateRoute><Layout><AIChurnPredictionPage /></Layout></PrivateRoute>} />
+        <Route path="/ai/revenue-optimization" element={<PrivateRoute><Layout><AIRevenueOptimizationPage /></Layout></PrivateRoute>} />
         <Route path="*" element={<Navigate to="/" replace />} />
+          // === Batch 07 Gaps & Frontend Mounts ===
+          <Route path='/cf-revenue-per-available-seatday-revpasday-opti' element={<CfRevenuePerAvailableSeatdayRevpasdayOpti />} />
+          <Route path='/cf-snow-conditions-forecasting' element={<CfSnowConditionsForecasting />} />
+          <Route path='/cf-demandbased-staffing' element={<CfDemandbasedStaffing />} />
+          <Route path='/cf-guest-experience-personalization' element={<CfGuestExperiencePersonalization />} />
+          <Route path='/cf-maintenance-predictive-scheduling' element={<CfMaintenancePredictiveScheduling />} />
+          <Route path='/cf-dynamic-dining-recommendations' element={<CfDynamicDiningRecommendations />} />
+          <Route path='/gap-no-occupancyforecast-for-resort-busyness' element={<GapNoOccupancyforecastForResortBusyness />} />
+          <Route path='/gap-no-revenueoptimization-bundle-pricing' element={<GapNoRevenueoptimizationBundlePricing />} />
+          <Route path='/gap-no-avalancheriskassessment-ml' element={<GapNoAvalancheriskassessmentMl />} />
+          <Route path='/gap-no-equipmentmaintenancescheduling-ai' element={<GapNoEquipmentmaintenanceschedulingAi />} />
+          <Route path='/gap-no-instructorscheduling-demand-matching' element={<GapNoInstructorschedulingDemandMatching />} />
+          <Route path='/gap-no-churnprediction-returning-guest-likelihoo' element={<GapNoChurnpredictionReturningGuestLikelihoo />} />
+          <Route path='/gap-no-realtime-lift-line-wait-estimation' element={<GapNoRealtimeLiftLineWaitEstimation />} />
+          <Route path='/gap-no-public-online-lesson-booking-widget' element={<GapNoPublicOnlineLessonBookingWidget />} />
+          <Route path='/gap-no-food-ordering-pos-integration' element={<GapNoFoodOrderingPosIntegration />} />
+          <Route path='/gap-limited-weather-api-integration-stations-are' element={<GapLimitedWeatherApiIntegrationStationsAre />} />
+          <Route path='/gap-no-lift-ticket-pos-integration' element={<GapNoLiftTicketPosIntegration />} />
+          <Route path='/gap-no-guest-mobile-app-companion' element={<GapNoGuestMobileAppCompanion />} />
+          <Route path='/gap-no-notificationssms-for-guests' element={<GapNoNotificationssmsForGuests />} />
+          // === End Batch 07 ===
       </Routes>
     </Router>
   );

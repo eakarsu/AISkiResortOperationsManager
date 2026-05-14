@@ -16,6 +16,8 @@ async function seed() {
     // Drop all tables
     console.log('Dropping existing tables...');
     await client.query(`
+      DROP TABLE IF EXISTS pricing_audit_log CASCADE;
+      DROP TABLE IF EXISTS ai_results CASCADE;
       DROP TABLE IF EXISTS terrain_park_features CASCADE;
       DROP TABLE IF EXISTS staffing CASCADE;
       DROP TABLE IF EXISTS avalanche_control CASCADE;
@@ -418,8 +420,29 @@ async function seed() {
         condition VARCHAR(100),
         created_at TIMESTAMP DEFAULT NOW()
       );
+
+      CREATE TABLE IF NOT EXISTS ai_results (
+        id SERIAL PRIMARY KEY,
+        endpoint VARCHAR(255),
+        user_id INTEGER,
+        prompt_summary TEXT,
+        result JSONB,
+        model VARCHAR(200),
+        created_at TIMESTAMP DEFAULT NOW()
+      );
+
+      CREATE TABLE IF NOT EXISTS pricing_audit_log (
+        id SERIAL PRIMARY KEY,
+        applied_by INTEGER,
+        ticket_type VARCHAR(100),
+        old_price DECIMAL(10,2),
+        new_price DECIMAL(10,2),
+        reason TEXT,
+        confidence DECIMAL(5,2),
+        applied_at TIMESTAMP DEFAULT NOW()
+      );
     `);
-    console.log('All 26 tables created.\n');
+    console.log('All 28 tables created.\n');
 
     // Seed admin user
     console.log('Creating admin user...');
