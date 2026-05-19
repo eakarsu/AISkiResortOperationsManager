@@ -5,14 +5,17 @@ const { pool } = require('../db');
 router.get('/', async (req, res) => {
   try {
     const { search } = req.query;
-    let query = 'SELECT * FROM season_passes ORDER BY created_at DESC';
+    const page = Math.max(1, parseInt(req.query.page) || 1);
+    const limit = Math.min(100, parseInt(req.query.limit) || 20);
+    const offset = (page - 1) * limit;
+    let baseQuery = 'FROM season_passes';
     let params = [];
-    if (search) {
-      query = 'SELECT * FROM season_passes WHERE holder_name ILIKE $1 ORDER BY created_at DESC';
-      params = [`%${search}%`];
-    }
-    const result = await pool.query(query, params);
-    res.json(result.rows);
+    if (search) { baseQuery += ' WHERE holder_name ILIKE $1'; params = [`%${search}%`]; }
+    const countQ = await pool.query(`SELECT COUNT(*) ${baseQuery}`, params);
+    const total = parseInt(countQ.rows[0].count);
+    params.push(limit, offset);
+    const dataQ = await pool.query(`SELECT * ${baseQuery} ORDER BY created_at DESC LIMIT $${params.length-1} OFFSET $${params.length}`, params);
+    res.json({ data: dataQ.rows, pagination: { page, limit, total, totalPages: Math.ceil(total / limit) } });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

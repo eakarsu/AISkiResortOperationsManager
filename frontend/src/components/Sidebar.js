@@ -44,6 +44,12 @@ const navSections = [
     ]
   },
   {
+    title: 'Resort Views',
+    items: [
+      { path: '/custom-views', icon: '🗺️', label: 'Custom Resort Views' },
+    ]
+  },
+  {
     title: 'AI Intelligence',
     isAI: true,
     items: [
@@ -53,6 +59,12 @@ const navSections = [
       { path: '/ai/guest-recommendations', icon: '🎯', label: 'Guest Recommendations' },
       { path: '/ai/marketing-content', icon: '📢', label: 'Marketing Content' },
       { path: '/ai/staffing-prediction', icon: '📊', label: 'Staffing Prediction' },
+      { path: '/ai/occupancy-forecast', icon: '📈', label: 'Occupancy Forecast' },
+      { path: '/ai/avalanche-risk', icon: '⚠️', label: 'Avalanche Risk' },
+      { path: '/ai/equipment-maintenance-scheduling', icon: '🛠️', label: 'Equipment Maintenance' },
+      { path: '/ai/instructor-scheduling', icon: '🎿', label: 'Instructor Scheduling' },
+      { path: '/ai/churn-prediction', icon: '🔁', label: 'Churn Prediction' },
+      { path: '/ai/revenue-optimization', icon: '💵', label: 'Revenue Optimization' },
     ]
   }
 ];
