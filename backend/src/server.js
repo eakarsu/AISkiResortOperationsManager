@@ -57,6 +57,9 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// Custom Views (mounted BEFORE error handler / 404)
+app.use('/api/custom-views', authMiddleware, require('./routes/customViews'));
+
 // Error handler
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err.stack);

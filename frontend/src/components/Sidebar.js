@@ -44,6 +44,12 @@ const navSections = [
     ]
   },
   {
+    title: 'Resort Views',
+    items: [
+      { path: '/custom-views', icon: '🗺️', label: 'Custom Resort Views' },
+    ]
+  },
+  {
     title: 'AI Intelligence',
     isAI: true,
     items: [

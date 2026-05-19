@@ -41,6 +41,7 @@ import AIEquipmentMaintenanceSchedulingPage from './pages/AIEquipmentMaintenance
 import AIInstructorSchedulingPage from './pages/AIInstructorSchedulingPage';
 import AIChurnPredictionPage from './pages/AIChurnPredictionPage';
 import AIRevenueOptimizationPage from './pages/AIRevenueOptimizationPage';
+import CustomViewsPage from './pages/CustomViewsPage';
 
 // === Batch 07 Gaps & Frontend Mounts ===
 import CfRevenuePerAvailableSeatdayRevpasdayOpti from './pages/CfRevenuePerAvailableSeatdayRevpasdayOpti';
@@ -113,8 +114,8 @@ function App() {
         <Route path="/ai/instructor-scheduling" element={<PrivateRoute><Layout><AIInstructorSchedulingPage /></Layout></PrivateRoute>} />
         <Route path="/ai/churn-prediction" element={<PrivateRoute><Layout><AIChurnPredictionPage /></Layout></PrivateRoute>} />
         <Route path="/ai/revenue-optimization" element={<PrivateRoute><Layout><AIRevenueOptimizationPage /></Layout></PrivateRoute>} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-          // === Batch 07 Gaps & Frontend Mounts ===
+        <Route path="/custom-views" element={<PrivateRoute><Layout><CustomViewsPage /></Layout></PrivateRoute>} />
+          {/* === Batch 07 Gaps & Frontend Mounts === */}
           <Route path='/cf-revenue-per-available-seatday-revpasday-opti' element={<CfRevenuePerAvailableSeatdayRevpasdayOpti />} />
           <Route path='/cf-snow-conditions-forecasting' element={<CfSnowConditionsForecasting />} />
           <Route path='/cf-demandbased-staffing' element={<CfDemandbasedStaffing />} />
@@ -134,7 +135,8 @@ function App() {
           <Route path='/gap-no-lift-ticket-pos-integration' element={<GapNoLiftTicketPosIntegration />} />
           <Route path='/gap-no-guest-mobile-app-companion' element={<GapNoGuestMobileAppCompanion />} />
           <Route path='/gap-no-notificationssms-for-guests' element={<GapNoNotificationssmsForGuests />} />
-          // === End Batch 07 ===
+          {/* === End Batch 07 === */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );
