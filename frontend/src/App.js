@@ -63,6 +63,11 @@ import GapLimitedWeatherApiIntegrationStationsAre from './pages/GapLimitedWeathe
 import GapNoLiftTicketPosIntegration from './pages/GapNoLiftTicketPosIntegration';
 import GapNoGuestMobileAppCompanion from './pages/GapNoGuestMobileAppCompanion';
 import GapNoNotificationssmsForGuests from './pages/GapNoNotificationssmsForGuests';
+import CodexCustomVizFeature from './pages/CodexCustomVizFeature';
+import CodexOperationsFeature from './pages/CodexOperationsFeature';
+
+import TimelineView from './pages/TimelineView';
+
 // === End Batch 07 ===
 
 
@@ -75,6 +80,10 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/insights/timeline" element={<TimelineView />} />
+        <Route path="/codex/custom-viz" element={<CodexCustomVizFeature />} />
+        <Route path="/codex/operations" element={<CodexOperationsFeature />} />
+
         <Route path="/" element={<Login />} />
         <Route path="/dashboard" element={<PrivateRoute><Layout><Dashboard /></Layout></PrivateRoute>} />
         <Route path="/lift-tickets" element={<PrivateRoute><Layout><LiftTicketsPage /></Layout></PrivateRoute>} />

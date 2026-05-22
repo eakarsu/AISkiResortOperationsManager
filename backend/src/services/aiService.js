@@ -2,7 +2,7 @@ const fetch = require('node-fetch');
 
 async function callAI(systemPrompt, userPrompt, retries = 1) {
   const apiKey = process.env.OPENROUTER_API_KEY;
-  const model = 'anthropic/claude-3-5-sonnet-20241022';
+  const model = process.env.OPENROUTER_MODEL || 'anthropic/claude-haiku-4.5';
 
   if (!apiKey) {
     const err = new Error('AI service unavailable: OPENROUTER_API_KEY not set');
