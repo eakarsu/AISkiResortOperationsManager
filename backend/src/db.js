@@ -1,7 +1,8 @@
 const { Pool } = require('pg');
+const { databaseUrl } = require('./config/security');
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: databaseUrl,
 });
 
 const query = (text, params) => pool.query(text, params);

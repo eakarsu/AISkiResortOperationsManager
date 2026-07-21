@@ -1,5 +1,7 @@
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../../.env') });
+if (process.env.ALLOW_DESTRUCTIVE_SEED !== 'true') throw new Error('Set ALLOW_DESTRUCTIVE_SEED=true to run the destructive seed explicitly');
+if (!process.env.SEED_ADMIN_PASSWORD || process.env.SEED_ADMIN_PASSWORD.length < 12) throw new Error('SEED_ADMIN_PASSWORD must contain at least 12 characters');
 const { Pool } = require('pg');
 const bcrypt = require('bcryptjs');
 
@@ -446,12 +448,12 @@ async function seed() {
 
     // Seed admin user
     console.log('Creating admin user...');
-    const hashedPassword = await bcrypt.hash('admin123', 10);
+    const hashedPassword = await bcrypt.hash(process.env.SEED_ADMIN_PASSWORD, 12);
     await client.query(`
       INSERT INTO users (name, email, password, role)
       VALUES ('Admin', 'admin@alpinepeak.com', $1, 'admin')
     `, [hashedPassword]);
-    console.log('Admin user created: admin@alpinepeak.com / admin123\n');
+    console.log('Admin user created with the environment-provided credential.\n');
 
     // Seed lift_tickets
     console.log('Seeding lift_tickets...');
@@ -985,7 +987,7 @@ async function seed() {
     console.log('\n==========================================');
     console.log('Database seeded successfully!');
     console.log('==========================================');
-    console.log('Admin login: admin@alpinepeak.com / admin123');
+    console.log('Admin credential was supplied through the environment.');
     console.log('Tables created: 26');
     console.log('==========================================\n');
 

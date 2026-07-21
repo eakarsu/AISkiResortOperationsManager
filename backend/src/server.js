@@ -3,6 +3,7 @@ require('dotenv').config({ path: require('path').join(__dirname, '../../.env') }
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
+const { pool } = require('./db');
 
 const app = express();
 const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:4000';
@@ -17,6 +18,13 @@ const authMiddleware = require('./middleware/auth');
 
 // Public routes
 app.use('/api/auth', require('./routes/auth'));
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+app.use('/api/reservation-workflow', authMiddleware, require('./routes/reservationWorkflow'));
+app.use(/^\/api\/(?:gap-|ai(?:\/|$)|ai-)/, authMiddleware, (req, res) => res.status(503).json({
+  error: 'Generated AI and gap routes are quarantined; use /api/reservation-workflow', retryable: false,
+}));
 
 // Protected routes - all require auth
 const protectedRoutes = [
@@ -52,11 +60,6 @@ protectedRoutes.forEach(([path, router]) => {
   app.use(path, authMiddleware, router);
 });
 
-// Health check
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
-
 // Custom Views (mounted BEFORE error handler / 404)
 app.use('/api/custom-views', authMiddleware, require('./routes/customViews'));
 
@@ -65,14 +68,6 @@ app.use((err, req, res, next) => {
   console.error('Unhandled error:', err.stack);
   res.status(err.status || 500).json({ error: err.message || 'Internal Server Error' });
 });
-
-// Start server
-const PORT = process.env.BACKEND_PORT || 4001;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-
-module.exports = app;
 
 // AI feature mount: revpasday
 app.use('/api/ai/revpasday', require('./routes/ai-revpasday'));
@@ -91,3 +86,8 @@ app.use('/api/gap-no-lift-ticket-pos-integration', require('./routes/gap-no-lift
 app.use('/api/gap-no-guest-mobile-app-companion', require('./routes/gap-no-guest-mobile-app-companion'));
 app.use('/api/gap-no-notificationssms-for-guests', require('./routes/gap-no-notificationssms-for-guests'));
 // === End Batch 07 ===
+
+const PORT = process.env.BACKEND_PORT || 4001;
+async function start(){const result=await pool.query("SELECT to_regclass('public.resort_reservations') AS workflow_table");if(!result.rows[0].workflow_table)throw new Error('Database migrations are required; run ./scripts/migrate.sh');app.listen(PORT,()=>console.log(`Server running on port ${PORT}`));}
+start().catch(error=>{console.error('Failed to start server:',error.message);process.exitCode=1;});
+module.exports = app;
