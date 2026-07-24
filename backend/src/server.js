@@ -22,7 +22,7 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 app.use('/api/reservation-workflow', authMiddleware, require('./routes/reservationWorkflow'));
-app.use(/^\/api\/(?:gap-|ai(?:\/|$)|ai-)/, authMiddleware, (req, res) => res.status(503).json({
+app.use(/^\/api\/(?:gap-|ai-)/, authMiddleware, (req, res) => res.status(503).json({
   error: 'Generated AI and gap routes are quarantined; use /api/reservation-workflow', retryable: false,
 }));
 

@@ -6,5 +6,5 @@ test -f .env || { echo '.env is required (copy .env.example)' >&2; exit 1; }; se
 test -d backend/node_modules && test -d frontend/node_modules || { echo 'Dependencies are missing; install them explicitly before starting' >&2; exit 1; }
 mode="${1:-all}"; pids=(); trap 'for pid in "${pids[@]:-}"; do kill "$pid" 2>/dev/null || true; done' EXIT INT TERM
 if [[ "$mode" == backend || "$mode" == all ]]; then npm --prefix backend start & pids+=("$!"); fi
-if [[ "$mode" == frontend || "$mode" == all ]]; then npm --prefix frontend start & pids+=("$!"); fi
+if [[ "$mode" == frontend || "$mode" == all ]]; then PORT="$FRONTEND_PORT" BROWSER=none npm --prefix frontend start & pids+=("$!"); fi
 [[ ${#pids[@]} -gt 0 ]] || { echo 'Usage: ./start.sh [all|backend|frontend]' >&2; exit 2; }; wait
