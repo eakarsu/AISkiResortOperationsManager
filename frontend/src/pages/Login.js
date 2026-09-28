@@ -89,7 +89,7 @@ const Login = () => {
           </div>
 
           <button className="quick-login-btn" onClick={handleQuickLogin}>
-            Quick Demo Login
+            Auto Fill Demo Credentials
           </button>
 
           <p className="login-footer">

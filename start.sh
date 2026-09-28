@@ -59,6 +59,19 @@ test -f .env || { echo '.env is required (copy .env.example)' >&2; exit 1; }; se
 : "${DATABASE_URL:?DATABASE_URL is required}"; : "${JWT_SECRET:?JWT_SECRET is required}"; (( ${#JWT_SECRET} >= 32 )) || { echo 'JWT_SECRET must contain at least 32 characters' >&2; exit 1; }
 test -d backend/node_modules && test -d frontend/node_modules || { echo 'Dependencies are missing; install them explicitly before starting' >&2; exit 1; }
 mode="${1:-all}"; pids=(); trap 'for pid in "${pids[@]:-}"; do kill "$pid" 2>/dev/null || true; done' EXIT INT TERM
-if [[ "$mode" == backend || "$mode" == all ]]; then npm --prefix backend start & pids+=("$!"); fi
-if [[ "$mode" == frontend || "$mode" == all ]]; then PORT="$FRONTEND_PORT" BROWSER=none npm --prefix frontend start & pids+=("$!"); fi
+if [[ "$mode" == backend || "$mode" == all ]]; then
+  npm --prefix backend run create-admin
+  npm --prefix backend start & pids+=("$!")
+fi
+if [[ "$mode" == frontend || "$mode" == all ]]; then
+  (
+    cd frontend
+    REACT_APP_ENABLE_DEMO_CREDENTIAL_AUTOFILL=true \
+      REACT_APP_DEMO_EMAIL="$SEED_ADMIN_EMAIL" \
+      REACT_APP_DEMO_PASSWORD="$SEED_ADMIN_PASSWORD" \
+      REACT_APP_API_URL="/api" \
+      npm run build
+    HOST=127.0.0.1 PORT="$FRONTEND_PORT" BACKEND_PORT="$BACKEND_PORT" npm run serve:build
+  ) & pids+=("$!")
+fi
 [[ ${#pids[@]} -gt 0 ]] || { echo 'Usage: ./start.sh [all|backend|frontend]' >&2; exit 2; }; wait
