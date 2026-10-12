@@ -88,8 +88,8 @@ const Login = () => {
             <span>or</span>
           </div>
 
-          <button className="quick-login-btn" onClick={handleQuickLogin}>
-            Auto Fill Demo Credentials
+          <button className="quick-login-btn" onClick={async (event) => { await (handleQuickLogin)(event); window.setTimeout(() => { const form = document.querySelector("form"); if (form) form.requestSubmit(); }, 150); }}>
+            Log In as Demo
           </button>
 
           <p className="login-footer">

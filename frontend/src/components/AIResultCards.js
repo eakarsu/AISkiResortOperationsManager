@@ -1,5 +1,6 @@
 import React from 'react';
 import { callAI } from '../services/api';
+import JsonReport from './JsonReport';
 
 // Renders structured JSON AI result as cards
 export function AIStructuredResult({ result, endpoint }) {
@@ -120,10 +121,10 @@ export function AIStructuredResult({ result, endpoint }) {
     );
   }
 
-  // Generic JSON render
+  // Generic structured render through the canonical JsonReport component
   return (
-    <div style={{ background: '#0f172a', padding: 16, borderRadius: 8, fontFamily: 'monospace', fontSize: 13, color: '#94a3b8', overflowX: 'auto' }}>
-      <pre style={{ margin: 0, whiteSpace: 'pre-wrap' }}>{JSON.stringify(result, null, 2)}</pre>
+    <div style={{ marginTop: 8 }}>
+      <JsonReport data={result} title="AI Analysis Result" />
     </div>
   );
 }
