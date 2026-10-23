@@ -60,6 +60,7 @@ protectedRoutes.forEach(([path, router]) => {
   app.use(path, authMiddleware, router);
 });
 
+app.use('/api/feature-pack', authMiddleware, require('./routes/featurePack'));
 // Custom Views (mounted BEFORE error handler / 404)
 app.use('/api/custom-views', authMiddleware, require('./routes/customViews'));
 

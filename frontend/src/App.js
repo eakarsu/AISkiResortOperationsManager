@@ -42,6 +42,7 @@ import AIInstructorSchedulingPage from './pages/AIInstructorSchedulingPage';
 import AIChurnPredictionPage from './pages/AIChurnPredictionPage';
 import AIRevenueOptimizationPage from './pages/AIRevenueOptimizationPage';
 import CustomViewsPage from './pages/CustomViewsPage';
+import FeaturePackPage from './pages/FeaturePackPage';
 
 // === Batch 07 Gaps & Frontend Mounts ===
 import CfRevenuePerAvailableSeatdayRevpasdayOpti from './pages/CfRevenuePerAvailableSeatdayRevpasdayOpti';
@@ -124,6 +125,7 @@ function App() {
         <Route path="/ai/churn-prediction" element={<PrivateRoute><Layout><AIChurnPredictionPage /></Layout></PrivateRoute>} />
         <Route path="/ai/revenue-optimization" element={<PrivateRoute><Layout><AIRevenueOptimizationPage /></Layout></PrivateRoute>} />
         <Route path="/custom-views" element={<PrivateRoute><Layout><CustomViewsPage /></Layout></PrivateRoute>} />
+        <Route path="/feature-pack" element={<PrivateRoute><Layout><FeaturePackPage /></Layout></PrivateRoute>} />
           {/* === Batch 07 Gaps & Frontend Mounts === */}
           <Route path='/cf-revenue-per-available-seatday-revpasday-opti' element={<CfRevenuePerAvailableSeatdayRevpasdayOpti />} />
           <Route path='/cf-snow-conditions-forecasting' element={<CfSnowConditionsForecasting />} />

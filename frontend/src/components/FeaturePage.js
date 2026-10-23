@@ -197,31 +197,25 @@ const FeaturePage = ({ config }) => {
   );
 
   const renderDetail = () => (
-    <div className="fade-in">
-      <div className="feature-header">
-        <div>
-          <h1 className="feature-title">
-            <span className="feature-icon">{icon}</span>
-            {title} Details
-          </h1>
+    <div
+      className="modal-overlay"
+      style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.72)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}
+      onClick={() => { setView('list'); setSelectedItem(null); }}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        className="card"
+        style={{ width: 'min(680px, 92vw)', maxHeight: '85vh', overflow: 'auto', padding: 24 }}
+        onClick={e => e.stopPropagation()}
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+          <h2 className="feature-title" style={{ margin: 0, fontSize: 20 }}>
+            <span className="feature-icon">{icon}</span> {title} Details
+          </h2>
+          <button type="button" className="btn btn-secondary" onClick={() => { setView('list'); setSelectedItem(null); }}>✕</button>
         </div>
-      </div>
-
-      <div className="toolbar-actions" style={{ marginBottom: 20 }}>
-        <button className="btn btn-secondary" onClick={() => { setView('list'); setSelectedItem(null); }}>
-          &larr; Back to List
-        </button>
-        <button className="btn btn-primary" onClick={handleEdit}>
-          Edit
-        </button>
-        <button className="btn btn-danger" onClick={handleDelete}>
-          Delete
-        </button>
-      </div>
-
-      {error && <div className="alert alert-error">{error}</div>}
-
-      <div className="card">
+        {error && <div className="alert alert-error">{error}</div>}
         <div className="card-body">
           <div className="detail-grid">
             {formFields.map(field => (
@@ -239,6 +233,11 @@ const FeaturePage = ({ config }) => {
               </div>
             ))}
           </div>
+        </div>
+        <div className="toolbar-actions" style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, marginTop: 20 }}>
+          <button className="btn btn-primary" onClick={handleEdit}>Edit</button>
+          <button className="btn btn-danger" onClick={handleDelete}>Delete</button>
+          <button className="btn btn-secondary" onClick={() => { setView('list'); setSelectedItem(null); }}>Cancel</button>
         </div>
       </div>
     </div>
@@ -315,7 +314,7 @@ const FeaturePage = ({ config }) => {
 
   return (
     <div className="feature-page">
-      {view === 'list' && renderList()}
+      {view !== 'form' && renderList()}
       {view === 'detail' && selectedItem && renderDetail()}
       {view === 'form' && renderForm()}
     </div>
